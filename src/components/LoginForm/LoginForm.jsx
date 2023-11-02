@@ -1,9 +1,10 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setName, setEmail, setPassword } from 'redux/loginForm/loginFormSlice';
 import { Link } from 'react-router-dom';
 import css from './LoginForm.module.css';
 
 export const LoginForm = () => {
+  const { name, email, password } = useSelector(state => state.login);
   const dispatch = useDispatch();
 
   const handleChange = ({ target }) => {
@@ -15,6 +16,22 @@ export const LoginForm = () => {
     }
     if (target.name === 'password') {
       dispatch(setPassword(target.value));
+    }
+  };
+
+  const SubmitButton = () => {
+    if (name && email && password) {
+      return (
+        <button type="submit" className={css.btn}>
+          Log in
+        </button>
+      );
+    } else {
+      return (
+        <button type="submit" className={css.btn} disabled>
+          Log in
+        </button>
+      );
     }
   };
 
@@ -67,9 +84,7 @@ export const LoginForm = () => {
             />
           </label>
           <Link to="/home" className={css.link}>
-            <button type="submit" className={css.btn}>
-              Log in
-            </button>
+            <SubmitButton />
           </Link>
         </form>
       </div>
